@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dhananjay Study Material</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#f4f7fb;color:#172033}
+header{background:linear-gradient(135deg,#1646a0,#7b2cbf);color:white;padding:24px 16px;text-align:center}
+header h1{margin:0 0 7px;font-size:28px} header p{margin:0}
+nav{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;padding:12px;background:white;position:sticky;top:0;z-index:2;box-shadow:0 2px 8px #0001}
+button{border:0;border-radius:10px;padding:11px 15px;font-weight:bold;cursor:pointer}
+.navbtn{background:#edf2ff;color:#1646a0}.primary{background:#1646a0;color:#fff}.success{background:#16834b;color:#fff}.danger{background:#d73535;color:#fff}
+.container{max-width:1000px;margin:auto;padding:18px}
+.hero{background:white;border-radius:16px;padding:20px;margin-bottom:18px;box-shadow:0 3px 15px #00000012}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:15px}
+.card{background:white;border-radius:15px;padding:16px;box-shadow:0 3px 14px #00000012}
+.card h3{margin:0 0 8px}.price{font-size:22px;color:#16834b;font-weight:bold;margin:10px 0}
+.badge{display:inline-block;background:#fff0c2;padding:5px 8px;border-radius:8px;font-size:12px}
+.section{display:none}.section.active{display:block}
+input,select,textarea{width:100%;padding:12px;margin:6px 0 12px;border:1px solid #ccd4e0;border-radius:9px;font-size:15px}
+.order{border-left:5px solid #1646a0;margin:10px 0;padding:13px;background:#f8faff;border-radius:8px}
+.small{font-size:13px;color:#64748b}.total{font-size:22px;font-weight:bold}
+table{width:100%;border-collapse:collapse;background:white}th,td{padding:10px;border-bottom:1px solid #ddd;text-align:left}
+.notice{padding:12px;background:#e8f7ee;border-radius:10px;margin-bottom:12px}
+footer{text-align:center;padding:25px;color:#64748b}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>📚 Dhananjay Study Material</h1>
+  <p>Railway • SSC • Police • Competitive Exam Notes</p>
+</header>
+
+<nav>
+  <button class="navbtn" onclick="show('home')">🏠 Home</button>
+  <button class="navbtn" onclick="show('materials')">📚 Materials</button>
+  <button class="navbtn" onclick="show('orders')">📦 Orders</button>
+  <button class="navbtn" onclick="show('admin')">⚙️ Admin</button>
+</nav>
+
+<main class="container">
+
+<section id="home" class="section active">
+  <div class="hero">
+    <h2>अपना Study Material ऑनलाइन मंगाइए</h2>
+    <p>नीचे उपलब्ध सामग्री देखें और पसंद की PDF/Notes के लिए Order Now दबाएँ।</p>
+    <button class="primary" onclick="show('materials')">📚 Materials देखें</button>
+  </div>
+  <div class="grid">
+    <div class="card"><h3>📖 Quality Notes</h3><p>परीक्षा की तैयारी के लिए व्यवस्थित नोट्स।</p></div>
+    <div class="card"><h3>🔥 Hard MCQ</h3><p>Railway/SSC स्तर के कठिन प्रश्न।</p></div>
+    <div class="card"><h3>📦 आसान Order</h3><p>नाम, मोबाइल और पता देकर ऑर्डर करें।</p></div>
+  </div>
+</section>
+
+<section id="materials" class="section">
+  <h2>📚 उपलब्ध Study Material</h2>
+  <div id="materialList" class="grid"></div>
+</section>
+
+<section id="orderForm" class="section">
+  <div class="hero">
+    <h2>🛒 Order करें</h2>
+    <div id="selectedMaterial" class="notice"></div>
+    <form id="form">
+      <label>आपका नाम</label>
+      <input id="name" required placeholder="पूरा नाम">
+      <label>मोबाइल नंबर</label>
+      <input id="phone" required maxlength="10" inputmode="numeric" placeholder="10 अंकों का मोबाइल">
+      <label>पूरा पता</label>
+      <textarea id="address" required placeholder="गाँव/शहर, जिला, राज्य"></textarea>
+      <label>मटेरियल की संख्या</label>
+      <input id="qty" type="number" min="1" value="1" required>
+      <div class="total">कुल: ₹<span id="orderTotal">0</span></div><br>
+      <button class="success" type="submit">✅ Order Submit करें</button>
+      <button type="button" onclick="show('materials')"> वापस जाएँ</button>
+    </form>
+  </div>
+</section>
+
+<section id="orders" class="section">
+  <h2>📦 मेरे Orders</h2>
+  <div id="orderList"></div>
+</section>
+
+<section id="admin" class="section">
+  <h2>⚙️ Admin Dashboard</h2>
+  <div class="grid">
+    <div class="card"><h3>कुल Orders</h3><div id="count" class="total">0</div></div>
+    <div class="card"><h3>कुल बिक्री</h3><div class="total">₹<span id="sales">0</span></div></div>
+  </div>
+  <br>
+  <div class="hero">
+    <h3>➕ नया Material जोड़ें</h3>
+    <input id="newTitle" placeholder="Material का नाम">
+    <input id="newPrice" type="number" placeholder="कीमत ₹">
+    <button class="primary" onclick="addMaterial()">Material जोड़ें</button>
+  </div>
+  <div class="hero">
+    <h3>📋 सभी Orders</h3>
+    <div id="adminOrders"></div>
+    <br><button class="danger" onclick="clearOrders()">सभी Orders हटाएँ</button>
+  </div>
+</section>
+
+</main>
+<footer>© 2026 Dhananjay Study Material</footer>
+
+<script>
+let materials = JSON.parse(localStorage.getItem("materials") || "null") || [
+ {id:1,title:"Physics Ultra Hard MCQ",price:99},
+ {id:2,title:"Biology Railway MCQ",price:79},
+ {id:3,title:"Current Affairs 2026",price:49},
+ {id:4,title:"Railway ALP Complete Notes",price:149}
+];
+let orders = JSON.parse(localStorage.getItem("orders") || "[]");
+let selected = null;
+
+function save(){
+ localStorage.setItem("materials",JSON.stringify(materials));
+ localStorage.setItem("orders",JSON.stringify(orders));
+}
+function show(id){
+ document.querySelectorAll(".section").forEach(x=>x.classList.remove("active"));
+ document.getElementById(id).classList.add("active");
+ if(id==="materials") renderMaterials();
+ if(id==="orders") renderOrders();
+ if(id==="admin") renderAdmin();
+ window.scrollTo(0,0);
+}
+function renderMaterials(){
+ let box=document.getElementById("materialList");
+ box.innerHTML=materials.map(m=>`
+ <div class="card">
+   <span class="badge">PDF / Notes</span>
+   <h3>${esc(m.title)}</h3>
+   <div class="price">₹${m.price}</div>
+   <button class="primary" onclick="startOrder(${m.id})">🛒 Order Now</button>
+ </div>`).join("");
+}
+function startOrder(id){
+ selected=materials.find(m=>m.id===id);
+ document.getElementById("selectedMaterial").innerHTML=`<b>${esc(selected.title)}</b> — ₹${selected.price}`;
+ document.getElementById("qty").value=1;
+ updateTotal();
+ show("orderForm");
+}
+document.getElementById("qty").addEventListener("input",updateTotal);
+function updateTotal(){
+ if(selected) document.getElementById("orderTotal").textContent=selected.price*(+document.getElementById("qty").value||1);
+}
+document.getElementById("form").addEventListener("submit",e=>{
+ e.preventDefault();
+ let phone=document.getElementById("phone").value.trim();
+ if(!/^\d{10}$/.test(phone)){alert("कृपया सही 10 अंकों का मोबाइल नंबर डालें।");return}
+ let qty=+document.getElementById("qty").value;
+ orders.unshift({
+   id:Date.now(),material:selected.title,price:selected.price,qty,
+   total:selected.price*qty,name:document.getElementById("name").value.trim(),
+   phone,address:document.getElementById("address").value.trim(),status:"Pending",
+   date:new Date().toLocaleString("hi-IN")
+ });
+ save(); e.target.reset();
+ alert("✅ आपका Order सफलतापूर्वक दर्ज हो गया!");
+ show("orders");
+});
+function renderOrders(){
+ let box=document.getElementById("orderList");
+ if(!orders.length){box.innerHTML="<div class='hero'>अभी कोई Order नहीं है।</div>";return}
+ box.innerHTML=orders.map(o=>`<div class="order">
+ <b>${esc(o.material)}</b><br>नाम: ${esc(o.name)}<br>मोबाइल: ${esc(o.phone)}
+ <br>मात्रा: ${o.qty} | कुल: ₹${o.total}<br>स्थिति: <b>${o.status}</b>
+ <div class="small">${esc(o.date)}</div></div>`).join("");
+}
+function renderAdmin(){
+ document.getElementById("count").textContent=orders.length;
+ document.getElementById("sales").textContent=orders.reduce((a,o)=>a+o.total,0);
+ let box=document.getElementById("adminOrders");
+ if(!orders.length){box.innerHTML="अभी कोई Order नहीं है।";return}
+ box.innerHTML=orders.map(o=>`<div class="order">
+ <b>${esc(o.material)}</b> — ₹${o.total}<br>
+ 👤 ${esc(o.name)} | 📞 ${esc(o.phone)}<br>
+ 📍 ${esc(o.address)}<br>
+ <select onchange="changeStatus(${o.id},this.value)">
+  ${["Pending","Packed","Delivered"].map(s=>`<option ${o.status===s?"selected":""}>${s}</option>`).join("")}
+ </select>
+ </div>`).join("");
+}
+function changeStatus(id,status){
+ let o=orders.find(x=>x.id===id); if(o)o.status=status; save(); renderAdmin();
+}
+function addMaterial(){
+ let title=document.getElementById("newTitle").value.trim();
+ let price=+document.getElementById("newPrice").value;
+ if(!title||!price){alert("नाम और कीमत दोनों भरें।");return}
+ materials.push({id:Date.now(),title,price});save();
+ document.getElementById("newTitle").value="";document.getElementById("newPrice").value="";
+ alert("✅ Material जोड़ दिया गया!");renderAdmin();
+}
+function clearOrders(){
+ if(confirm("क्या आप सभी Orders हटाना चाहते हैं?")){
+  orders=[];save();renderAdmin();
+ }
+}
+function esc(s){
+ return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));
+}
+renderMaterials();
+</script>
+</body>
+</html>
